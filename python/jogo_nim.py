@@ -1,10 +1,13 @@
-def computador_escolhe_jogada(n,m,total):
+def computador_escolhe_jogada(n,m):
     y = 0
     i = 1
-    while i <= m:
-        if (total - i) % (m + 1) == 0:
-            y = i
-        i = i + 1
+    if n <= m:
+        y = n
+    else:
+        while i <= m:
+            if (n - i) % (m + 1) == 0:
+                y = i
+            i = i + 1
             
     if y == 0:
         y = m
@@ -19,15 +22,16 @@ def computador_escolhe_jogada(n,m,total):
 def usuario_escolhe_jogada(n,m):
     y = m+1
     while y > m:
-        y = int(input("Quantas peças você vai tirar? "))
-        if y > m:
+        jogada = int(input("Quantas peças você vai tirar? "))
+        if (jogada > m) or (jogada < 1) or (jogada > n):
             print("Oops! Jogada inválida! Tente de novo.")
         else:
-            if y == 1:
+            y = m
+            if jogada == 1:
                 print("Você tirou uma peça.")
             else:
-                print(f"Você tirou {y} peças.")
-    return y
+                print(f"Você tirou {jogada} peças.")
+    return jogada
 
 def partida():
     jogo = int(input("""
@@ -50,8 +54,7 @@ def partida():
             print(f"**** Rodada {rodada} ****")
         n = int(input("Quantas peças? "))
         m = int(input("Limite de peças por jogada? "))
-        total = n
-
+        
         if n % (m + 1) == 0:
             print("Você começa!")
             player = 1
@@ -59,18 +62,18 @@ def partida():
             print("Computador começa!")
             player = 0
 
-        while total > 0:
+        while n > 0:
             if player == 1:
-                total = total - usuario_escolhe_jogada(n,m)
+                n = n - usuario_escolhe_jogada(n,m)
                 player = 0
             else:
-                total = total - computador_escolhe_jogada(n,m,total)
+                n = n - computador_escolhe_jogada(n,m)
                 player = 1
 
-            if total > 1:
-                print(f"Agora restam {total} peças no tabuleiro")
-            elif total == 1:
-                print(f"Agora resta apenas {total} peça no tabuleiro")
+            if n > 1:
+                print(f"Agora restam {n} peças no tabuleiro")
+            elif n == 1:
+                print(f"Agora resta apenas {n} peça no tabuleiro")
             else:
                 if player == 1:
                     print("Fim do jogo! O computador ganhou!")
